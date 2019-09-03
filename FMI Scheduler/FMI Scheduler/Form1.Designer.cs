@@ -28,12 +28,36 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.listView3 = new System.Windows.Forms.ListView();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.listView1 = new System.Windows.Forms.ListView();
+            this.CompletedList = new System.Windows.Forms.ListView();
+            this.Order_C = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Angle_C = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Left_Right_C = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Length_C = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.QTY_C = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Material_C = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.TY1_C = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.TY2_C = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.TY3_C = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.TZ1_C = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.TZ2_C = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.TZ3_C = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.DateTime_Uploaded_C = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.ActiveList = new System.Windows.Forms.ListView();
             this.Order = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Angle = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Left_Right = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -47,32 +71,11 @@
             this.TZ2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.TZ3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.DateTime_Uploaded = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.listView2 = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader11 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader12 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader13 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.Orders = new System.Windows.Forms.Label();
+            this.PartDirTimer = new System.Windows.Forms.Timer(this.components);
+            this.PartListTimer = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -133,6 +136,7 @@
             // listView3
             // 
             this.listView3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listView3.HideSelection = false;
             this.listView3.Location = new System.Drawing.Point(3, 16);
             this.listView3.Name = "listView3";
             this.listView3.Size = new System.Drawing.Size(143, 467);
@@ -141,7 +145,7 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.listView1);
+            this.groupBox2.Controls.Add(this.CompletedList);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(152, 29);
             this.groupBox2.Margin = new System.Windows.Forms.Padding(1);
@@ -150,31 +154,32 @@
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
             // 
-            // listView1
+            // CompletedList
             // 
-            this.listView1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.Order,
-            this.Angle,
-            this.Left_Right,
-            this.Length,
-            this.QTY,
-            this.Material,
-            this.TY1,
-            this.TY2,
-            this.TY3,
-            this.TZ1,
-            this.TZ2,
-            this.TZ3,
-            this.DateTime_Uploaded});
-            this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listView1.GridLines = true;
-            this.listView1.Location = new System.Drawing.Point(3, 16);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(849, 150);
-            this.listView1.TabIndex = 0;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
+            this.CompletedList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.CompletedList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.Order_C,
+            this.Angle_C,
+            this.Left_Right_C,
+            this.Length_C,
+            this.QTY_C,
+            this.Material_C,
+            this.TY1_C,
+            this.TY2_C,
+            this.TY3_C,
+            this.TZ1_C,
+            this.TZ2_C,
+            this.TZ3_C,
+            this.DateTime_Uploaded_C});
+            this.CompletedList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.CompletedList.GridLines = true;
+            this.CompletedList.HideSelection = false;
+            this.CompletedList.Location = new System.Drawing.Point(3, 16);
+            this.CompletedList.Name = "CompletedList";
+            this.CompletedList.Size = new System.Drawing.Size(849, 150);
+            this.CompletedList.TabIndex = 0;
+            this.CompletedList.UseCompatibleStateImageBehavior = false;
+            this.CompletedList.View = System.Windows.Forms.View.Details;
             // 
             // groupBox3
             // 
@@ -263,7 +268,7 @@
             // 
             // groupBox4
             // 
-            this.groupBox4.Controls.Add(this.listView2);
+            this.groupBox4.Controls.Add(this.ActiveList);
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Location = new System.Drawing.Point(152, 280);
             this.groupBox4.Margin = new System.Windows.Forms.Padding(1);
@@ -273,31 +278,92 @@
             this.groupBox4.TabIndex = 10;
             this.groupBox4.TabStop = false;
             // 
-            // listView2
+            // ActiveList
             // 
-            this.listView2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.listView2.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3,
-            this.columnHeader4,
-            this.columnHeader5,
-            this.columnHeader6,
-            this.columnHeader7,
-            this.columnHeader8,
-            this.columnHeader9,
-            this.columnHeader10,
-            this.columnHeader11,
-            this.columnHeader12,
-            this.columnHeader13});
-            this.listView2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listView2.GridLines = true;
-            this.listView2.Location = new System.Drawing.Point(2, 15);
-            this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(851, 218);
-            this.listView2.TabIndex = 1;
-            this.listView2.UseCompatibleStateImageBehavior = false;
-            this.listView2.SelectedIndexChanged += new System.EventHandler(this.listView2_SelectedIndexChanged);
+            this.ActiveList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ActiveList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.Order,
+            this.Angle,
+            this.Left_Right,
+            this.Length,
+            this.QTY,
+            this.Material,
+            this.TY1,
+            this.TY2,
+            this.TY3,
+            this.TZ1,
+            this.TZ2,
+            this.TZ3,
+            this.DateTime_Uploaded});
+            this.ActiveList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ActiveList.FullRowSelect = true;
+            this.ActiveList.GridLines = true;
+            this.ActiveList.HideSelection = false;
+            this.ActiveList.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.ActiveList.Location = new System.Drawing.Point(2, 15);
+            this.ActiveList.Name = "ActiveList";
+            this.ActiveList.Size = new System.Drawing.Size(851, 218);
+            this.ActiveList.Sorting = System.Windows.Forms.SortOrder.Ascending;
+            this.ActiveList.TabIndex = 1;
+            this.ActiveList.UseCompatibleStateImageBehavior = false;
+            this.ActiveList.View = System.Windows.Forms.View.Details;
+            this.ActiveList.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.ActiveList_ColumnClick);
+            // 
+            // Order
+            // 
+            this.Order.Text = "Order";
+            this.Order.Width = 72;
+            // 
+            // Angle
+            // 
+            this.Angle.Text = "Angle";
+            this.Angle.Width = 80;
+            // 
+            // Left_Right
+            // 
+            this.Left_Right.Text = "Left_Right";
+            this.Left_Right.Width = 70;
+            // 
+            // Length
+            // 
+            this.Length.Text = "Length";
+            // 
+            // QTY
+            // 
+            this.QTY.Text = "QTY";
+            // 
+            // Material
+            // 
+            this.Material.Text = "Material";
+            // 
+            // TY1
+            // 
+            this.TY1.Text = "TY1";
+            // 
+            // TY2
+            // 
+            this.TY2.Text = "TY2";
+            // 
+            // TY3
+            // 
+            this.TY3.Text = "TY3";
+            // 
+            // TZ1
+            // 
+            this.TZ1.Text = "TZ1";
+            // 
+            // TZ2
+            // 
+            this.TZ2.Text = "TZ2";
+            // 
+            // TZ3
+            // 
+            this.TZ3.Text = "TZ3";
+            // 
+            // DateTime_Uploaded
+            // 
+            this.DateTime_Uploaded.Text = "DateTime_Uploaded";
+            this.DateTime_Uploaded.Width = 118;
             // 
             // label2
             // 
@@ -331,6 +397,18 @@
             this.Orders.TabIndex = 14;
             this.Orders.Text = "Sales Order";
             this.Orders.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // PartDirTimer
+            // 
+            this.PartDirTimer.Enabled = true;
+            this.PartDirTimer.Interval = 3000;
+            this.PartDirTimer.Tick += new System.EventHandler(this.Timer1_Tick);
+            // 
+            // PartListTimer
+            // 
+            this.PartListTimer.Enabled = true;
+            this.PartListTimer.Interval = 3200;
+            this.PartListTimer.Tick += new System.EventHandler(this.PartListTimer_Tick);
             // 
             // Form1
             // 
@@ -372,7 +450,22 @@
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Label Orders;
         private System.Windows.Forms.ListView listView3;
-        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.ListView CompletedList;
+        private System.Windows.Forms.ColumnHeader Order_C;
+        private System.Windows.Forms.ColumnHeader Angle_C;
+        private System.Windows.Forms.ColumnHeader Left_Right_C;
+        private System.Windows.Forms.ColumnHeader Length_C;
+        private System.Windows.Forms.ColumnHeader QTY_C;
+        private System.Windows.Forms.ColumnHeader Material_C;
+        private System.Windows.Forms.ColumnHeader TY1_C;
+        private System.Windows.Forms.ColumnHeader TY2_C;
+        private System.Windows.Forms.ColumnHeader TY3_C;
+        private System.Windows.Forms.ColumnHeader TZ1_C;
+        private System.Windows.Forms.ColumnHeader TZ2_C;
+        private System.Windows.Forms.ColumnHeader TZ3_C;
+        private System.Windows.Forms.ColumnHeader DateTime_Uploaded_C;
+        private System.Windows.Forms.Timer PartDirTimer;
+        private System.Windows.Forms.ListView ActiveList;
         private System.Windows.Forms.ColumnHeader Order;
         private System.Windows.Forms.ColumnHeader Angle;
         private System.Windows.Forms.ColumnHeader Left_Right;
@@ -386,20 +479,7 @@
         private System.Windows.Forms.ColumnHeader TZ2;
         private System.Windows.Forms.ColumnHeader TZ3;
         private System.Windows.Forms.ColumnHeader DateTime_Uploaded;
-        private System.Windows.Forms.ListView listView2;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.ColumnHeader columnHeader3;
-        private System.Windows.Forms.ColumnHeader columnHeader4;
-        private System.Windows.Forms.ColumnHeader columnHeader5;
-        private System.Windows.Forms.ColumnHeader columnHeader6;
-        private System.Windows.Forms.ColumnHeader columnHeader7;
-        private System.Windows.Forms.ColumnHeader columnHeader8;
-        private System.Windows.Forms.ColumnHeader columnHeader9;
-        private System.Windows.Forms.ColumnHeader columnHeader10;
-        private System.Windows.Forms.ColumnHeader columnHeader11;
-        private System.Windows.Forms.ColumnHeader columnHeader12;
-        private System.Windows.Forms.ColumnHeader columnHeader13;
+        private System.Windows.Forms.Timer PartListTimer;
     }
 }
 
