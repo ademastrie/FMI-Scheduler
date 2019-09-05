@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
-
+using BrightIdeasSoftware;
 
 namespace FMI_Scheduler
 {
@@ -26,16 +26,17 @@ namespace FMI_Scheduler
         
 
         //TODO Will want to create these directories programatically or even allow for them to be set in options
-        string partsDirectory = @"C:\Users\sekon\Documents\FMI-Scheduler\Parts";
-        string processedDirectory = @"C:\Users\sekon\Documents\FMI-Scheduler\Parts\Processed\";
-        string errorDirectory = @"C:\Users\sekon\Documents\FMI-Scheduler\Parts\Error\";
-        string completedDirectory = @"C:\Users\sekon\Documents\FMI-Scheduler\Parts\Completed\";
+        string partsDirectory = @"../../../Parts";
+        string processedDirectory = @"../../../Parts\Processed\";
+        string errorDirectory = @"../../../Parts\Error\";
+        string completedDirectory = @"../../../Parts\Completed\";
 
         public Form1()
         {
             InitializeComponent();
             ReadFile();
-            CreateActiveList();
+            ActiveObjList();
+            //CreateActiveList();
         }
 
 
@@ -95,7 +96,8 @@ namespace FMI_Scheduler
         //create our sale order objects and serialize them so that we dont have to do it everytime the program runs
         private void PopulateSalesOrder()
         {
-            string serObjectPath = @"../../../" + fileSplit[1] + fileSplit[2] + ".bin"; //path to save a binary file containing object details
+            Directory.CreateDirectory(@"../../../obj\");
+            string serObjectPath = @"../../../obj\" + fileSplit[1] + fileSplit[2] + ".bin"; //path to save a binary file containing object details
 
             if (!File.Exists(serObjectPath))//if we already created this object dont do it again
             {
@@ -122,7 +124,7 @@ namespace FMI_Scheduler
                 if (myVars.TryGetValue("TY3 ", out result)) { salesOrder.TY3 = result; } else salesOrder.TY3 = null;
 
                 System.IO.File.Move(salesOrder.FilePath , processedDirectory + filePathName);
-                salesOrder.FilePath = processedDirectory;
+                salesOrder.FilePath = processedDirectory + filePathName;
 
                 Stream saveFileStream = File.Create(serObjectPath);
                 BinaryFormatter serializer = new BinaryFormatter();
@@ -132,11 +134,10 @@ namespace FMI_Scheduler
             }          
         }
 
-        private void CreateActiveList()
-        {
-            ActiveList.AutoResizeColumns = false;
 
-            var binFiles = Directory.EnumerateFiles(@"../../../ ", "*.bin");
+        private void ActiveObjList()
+        {
+            var binFiles = Directory.EnumerateFiles(@"../../../obj ", "*.bin");
             if (binFiles != null)
             {
                 foreach (string currentFile in binFiles)
@@ -145,21 +146,33 @@ namespace FMI_Scheduler
                     Stream openFileStream = File.OpenRead(currentFile);
                     BinaryFormatter deserializer = new BinaryFormatter();
                     SalesOrder salesOrder = (SalesOrder)deserializer.Deserialize(openFileStream);
-                    
-                    
-                    if (ActiveList.FindItemWithText(salesOrder.Order) == null)
-                    {
-                        ListViewItem WO = new ListViewItem(salesOrder.Order);
-                        WO.SubItems.Add(salesOrder.WallMidOutside);
-                        WO.SubItems.Add(salesOrder.Left_Right);
-                        WO.SubItems.Add(salesOrder.Length);
-                        WO.SubItems.Add(salesOrder.QTY);
-                        WO.SubItems.Add(salesOrder.Material);
-                        WO.SubItems.Add(salesOrder.TY1); WO.SubItems.Add(salesOrder.TY2); WO.SubItems.Add(salesOrder.TY3);
-                        WO.SubItems.Add(salesOrder.TZ1); WO.SubItems.Add(salesOrder.TZ2); WO.SubItems.Add(salesOrder.TZ3);
-                        WO.SubItems.Add(salesOrder.UploadedTime);
 
-                        ActiveList.Items.Add(WO);
+                    Console.WriteLine("" + salesOrder.FilePath);
+                    if (ActiveList.FindItemWithText(salesOrder.FilePath) == null)
+                    {
+                        ActiveList.AddObject(salesOrder);
+                    }
+                    openFileStream.Close();
+                }
+            }
+        }
+    
+        private void CompletedObjList()
+        {
+            var binFiles = Directory.EnumerateFiles(@"../../../obj ", "*.bin");
+            if (binFiles != null)
+            {
+                foreach (string currentFile in binFiles)
+                {
+                    Console.WriteLine("Reading Saved File");
+                    Stream openFileStream = File.OpenRead(currentFile);
+                    BinaryFormatter deserializer = new BinaryFormatter();
+                    SalesOrder salesOrder = (SalesOrder)deserializer.Deserialize(openFileStream);
+
+
+                    if (CompletedList.FindItemWithText(salesOrder.FilePath) == null && salesOrder.Completed == true)
+                    {
+                        CompletedList.AddObject(salesOrder);
                     }
                     openFileStream.Close();
                 }
@@ -174,12 +187,10 @@ namespace FMI_Scheduler
 
         private void PartListTimer_Tick(object sender, EventArgs e)
         {
-            CreateActiveList();
+            ActiveObjList();
+           // CreateActiveList();
         }
 
-        private void ActiveList_ColumnClick(object sender, ColumnClickEventArgs e)
-        {
 
-        }
     }
 }

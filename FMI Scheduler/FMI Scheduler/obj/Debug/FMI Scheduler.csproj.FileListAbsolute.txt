@@ -10,3 +10,17 @@ C:\Users\sekon\Documents\FMI-Scheduler\FMI Scheduler\FMI Scheduler\obj\Debug\FMI
 C:\Users\sekon\Documents\FMI-Scheduler\FMI Scheduler\FMI Scheduler\obj\Debug\FMI Scheduler.exe
 C:\Users\sekon\Documents\FMI-Scheduler\FMI Scheduler\FMI Scheduler\obj\Debug\FMI Scheduler.pdb
 C:\Users\sekon\Documents\FMI-Scheduler\FMI Scheduler\FMI Scheduler\obj\Debug\FMI Scheduler.csprojAssemblyReference.cache
+C:\Users\ademastrie\Documents\FMI-Scheduler\FMI Scheduler\FMI Scheduler\bin\Debug\FMI Scheduler.exe.config
+C:\Users\ademastrie\Documents\FMI-Scheduler\FMI Scheduler\FMI Scheduler\bin\Debug\FMI Scheduler.exe
+C:\Users\ademastrie\Documents\FMI-Scheduler\FMI Scheduler\FMI Scheduler\bin\Debug\FMI Scheduler.pdb
+C:\Users\ademastrie\Documents\FMI-Scheduler\FMI Scheduler\FMI Scheduler\bin\Debug\Newtonsoft.Json.dll
+C:\Users\ademastrie\Documents\FMI-Scheduler\FMI Scheduler\FMI Scheduler\bin\Debug\Newtonsoft.Json.xml
+C:\Users\ademastrie\Documents\FMI-Scheduler\FMI Scheduler\FMI Scheduler\obj\Debug\FMI Scheduler.csprojAssemblyReference.cache
+C:\Users\ademastrie\Documents\FMI-Scheduler\FMI Scheduler\FMI Scheduler\obj\Debug\FMI_Scheduler.Form1.resources
+C:\Users\ademastrie\Documents\FMI-Scheduler\FMI Scheduler\FMI Scheduler\obj\Debug\FMI Scheduler.csproj.GenerateResource.cache
+C:\Users\ademastrie\Documents\FMI-Scheduler\FMI Scheduler\FMI Scheduler\obj\Debug\FMI Scheduler.csproj.CoreCompileInputs.cache
+C:\Users\ademastrie\Documents\FMI-Scheduler\FMI Scheduler\FMI Scheduler\obj\Debug\FMI Scheduler.csproj.CopyComplete
+C:\Users\ademastrie\Documents\FMI-Scheduler\FMI Scheduler\FMI Scheduler\obj\Debug\FMI Scheduler.exe
+C:\Users\ademastrie\Documents\FMI-Scheduler\FMI Scheduler\FMI Scheduler\obj\Debug\FMI Scheduler.pdb
+C:\Users\ademastrie\Documents\FMI-Scheduler\FMI Scheduler\FMI Scheduler\bin\Debug\ObjectListView.dll
+C:\Users\ademastrie\Documents\FMI-Scheduler\FMI Scheduler\FMI Scheduler\bin\Debug\ObjectListView.xml
