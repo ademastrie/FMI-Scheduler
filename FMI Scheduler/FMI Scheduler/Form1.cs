@@ -22,6 +22,7 @@ namespace FMI_Scheduler
         string filePath = null; // saves the name of the part file to later split to get order and left/right info
         string filePathName = null;
         string line; //stores the lines from part files
+        string dashNum;
         Dictionary<string, string> myVars; // stores all of the splits from a part file
         
 
@@ -46,7 +47,7 @@ namespace FMI_Scheduler
             public string FilePath { get; set; }
             public string Order { get; set; }
             public string WallMidOutside { get; set; }                
-            public string Left_Right { get; set; }
+            public string LeftRight { get; set; }
             public string Length { get; set; }
             public string QTY { get; set; }
             public string Material { get; set; }
@@ -99,14 +100,18 @@ namespace FMI_Scheduler
             Directory.CreateDirectory(@"../../../obj\");
             string serObjectPath = @"../../../obj\" + fileSplit[1] + fileSplit[2] + ".bin"; //path to save a binary file containing object details
 
+            //Split the last part of the part file to determine the dash number of the sales order.
+            string[] lastSplit = fileSplit[2].Split(new char[] { 'W', 'M', 'O' });
+            dashNum = lastSplit[1][0].ToString();
+            
+            
+
             if (!File.Exists(serObjectPath))//if we already created this object dont do it again
             {
                 SalesOrder salesOrder = new SalesOrder
                 {
                     FilePath = filePath,
-                    Order = fileSplit[1] + "-" + fileSplit[2],
-                    WallMidOutside = null,
-                    Left_Right = null,
+                    Order = fileSplit[1] + "-" + dashNum,
                     Length = myVars["LEN "],
                     QTY = myVars["QTY "],
                     Material = myVars["SEC "],
@@ -123,8 +128,19 @@ namespace FMI_Scheduler
                 if (myVars.TryGetValue("TY2 ", out result)) { salesOrder.TY2 = result; } else salesOrder.TY2 = null;
                 if (myVars.TryGetValue("TY3 ", out result)) { salesOrder.TY3 = result; } else salesOrder.TY3 = null;
 
-                System.IO.File.Move(salesOrder.FilePath , processedDirectory + filePathName);
-                salesOrder.FilePath = processedDirectory + filePathName;
+               
+                if (fileSplit[2].Contains("W")) { salesOrder.WallMidOutside = "Wall"; }
+                if (fileSplit[2].Contains("M")) { salesOrder.WallMidOutside = "Middle"; }
+                if (fileSplit[2].Contains("O")) { salesOrder.WallMidOutside = "Outside"; }
+
+                //if there is more than one character in last split 1 we can determine that it is a right hand file.
+                salesOrder.LeftRight = (lastSplit[1].Length > 1) ? "Right" : "Left";
+
+
+
+                //move the file from the root directory to a folder so we dont have to keep looping through the parts(this may have undesired effets)
+                File.Move(salesOrder.FilePath , processedDirectory + filePathName);
+                salesOrder.FilePath = processedDirectory + filePathName;//set the filepath to the new location
 
                 Stream saveFileStream = File.Create(serObjectPath);
                 BinaryFormatter serializer = new BinaryFormatter();
@@ -142,12 +158,10 @@ namespace FMI_Scheduler
             {
                 foreach (string currentFile in binFiles)
                 {
-                    Console.WriteLine("Reading Saved File");
                     Stream openFileStream = File.OpenRead(currentFile);
                     BinaryFormatter deserializer = new BinaryFormatter();
                     SalesOrder salesOrder = (SalesOrder)deserializer.Deserialize(openFileStream);
 
-                    Console.WriteLine("" + salesOrder.FilePath);
                     if (ActiveList.FindItemWithText(salesOrder.FilePath) == null)
                     {
                         ActiveList.AddObject(salesOrder);
@@ -164,7 +178,6 @@ namespace FMI_Scheduler
             {
                 foreach (string currentFile in binFiles)
                 {
-                    Console.WriteLine("Reading Saved File");
                     Stream openFileStream = File.OpenRead(currentFile);
                     BinaryFormatter deserializer = new BinaryFormatter();
                     SalesOrder salesOrder = (SalesOrder)deserializer.Deserialize(openFileStream);
