@@ -34,10 +34,17 @@ namespace FMI_Scheduler
 
         public Form1()
         {
+
+            Directory.CreateDirectory(partsDirectory);
+            Directory.CreateDirectory(processedDirectory);
+            Directory.CreateDirectory(errorDirectory);
+            Directory.CreateDirectory(completedDirectory);
+            Directory.CreateDirectory(@"../../../obj\");
+
             InitializeComponent();
             ReadFile();
             ActiveObjList();
-            //CreateActiveList();
+            
         }
 
 
@@ -48,8 +55,8 @@ namespace FMI_Scheduler
             public string Order { get; set; }
             public string WallMidOutside { get; set; }                
             public string LeftRight { get; set; }
-            public string Length { get; set; }
-            public string QTY { get; set; }
+            public float Length { get; set; }
+            public int QTY { get; set; }
             public string Material { get; set; }
             public string TZ1 { get; set; }
             public string TZ2 { get; set; }
@@ -71,24 +78,23 @@ namespace FMI_Scheduler
             {
                 foreach (string currentFile in prtFiles)
                 {
-                    sr = new StreamReader(currentFile);
-                    if (sr.BaseStream is FileStream)
-                    {
-                        filePath = (sr.BaseStream as FileStream).Name;
-                        filePathName = Path.GetFileName(filePath);
-                        fileSplit = filePathName.Split(new char[] { '-', '.' });
-                    }
 
-                    myVars = new Dictionary<string, string>();
-                    while ((line = sr.ReadLine()) != null && line.Contains('='))
-                    {
-                        split = line.Split(new char[] { '=' });
-                        myVars.Add(split[0], split[1]);
-                    }
+                        sr = new StreamReader(currentFile);
+                        if (sr.BaseStream is FileStream)
+                        {
+                            filePath = (sr.BaseStream as FileStream).Name;
+                            filePathName = Path.GetFileName(filePath);
+                            fileSplit = filePathName.Split(new char[] { '-', '.' });
+                        }
 
-                    sr.Close();
-
-                    PopulateSalesOrder();
+                        myVars = new Dictionary<string, string>();
+                        while ((line = sr.ReadLine()) != null && line.Contains('='))
+                        {
+                            split = line.Split(new char[] { '=' });
+                            myVars.Add(split[0], split[1]);
+                        }
+                        sr.Close();
+                        PopulateSalesOrder();
                 }
             }
             
@@ -97,58 +103,82 @@ namespace FMI_Scheduler
         //create our sale order objects and serialize them so that we dont have to do it everytime the program runs
         private void PopulateSalesOrder()
         {
-            Directory.CreateDirectory(@"../../../obj\");
-            string serObjectPath = @"../../../obj\" + fileSplit[1] + fileSplit[2] + ".bin"; //path to save a binary file containing object details
-
-            //Split the last part of the part file to determine the dash number of the sales order.
-            string[] lastSplit = fileSplit[2].Split(new char[] { 'W', 'M', 'O' });
-            dashNum = lastSplit[1][0].ToString();
-            
-            
-
-            if (!File.Exists(serObjectPath))//if we already created this object dont do it again
+            try
             {
-                SalesOrder salesOrder = new SalesOrder
+                string serObjectPath = @"../../../obj\" + fileSplit[1] + fileSplit[2] + ".bin"; //path to save a binary file containing object details
+
+                if (!File.Exists(serObjectPath))//if we already created this object dont do it again
                 {
-                    FilePath = filePath,
-                    Order = fileSplit[1] + "-" + dashNum,
-                    Length = myVars["LEN "],
-                    QTY = myVars["QTY "],
-                    Material = myVars["SEC "],
-                    UploadedTime = DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"),
-                    Completed = false
-                };
 
-                //if we have a tool declared in the part file assign it to the saleOrder variable if not make it null.
-                string result = null;
-                if (myVars.TryGetValue("TZ1 ", out result)) { salesOrder.TZ1 = result; } else salesOrder.TZ1 = null;
-                if (myVars.TryGetValue("TZ2 ", out result)) { salesOrder.TZ2 = result; } else salesOrder.TZ2 = null;
-                if (myVars.TryGetValue("TZ3 ", out result)) { salesOrder.TZ3 = result; } else salesOrder.TZ3 = null;
-                if (myVars.TryGetValue("TY1 ", out result)) { salesOrder.TY1 = result; } else salesOrder.TY1 = null;
-                if (myVars.TryGetValue("TY2 ", out result)) { salesOrder.TY2 = result; } else salesOrder.TY2 = null;
-                if (myVars.TryGetValue("TY3 ", out result)) { salesOrder.TY3 = result; } else salesOrder.TY3 = null;
+                    //Split the last part of the part file to determine the dash number of the sales order.
+                    string[] lastSplit = fileSplit[2].Split(new char[] { 'W', 'M', 'O' });
+                    dashNum = lastSplit[1][0].ToString();
 
-               
-                if (fileSplit[2].Contains("W")) { salesOrder.WallMidOutside = "Wall"; }
-                if (fileSplit[2].Contains("M")) { salesOrder.WallMidOutside = "Middle"; }
-                if (fileSplit[2].Contains("O")) { salesOrder.WallMidOutside = "Outside"; }
+                    SalesOrder salesOrder = new SalesOrder
+                    {
+                        FilePath = filePath,
+                        Order = fileSplit[1] + "-" + dashNum,
+                        Length = float.Parse(myVars["LEN "]),
+                        QTY = int.Parse(myVars["QTY "]),
+                        Material = myVars["SEC "],
+                        UploadedTime = DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"),
+                        Completed = false
+                    };
 
-                //if there is more than one character in last split 1 we can determine that it is a right hand file.
-                salesOrder.LeftRight = (lastSplit[1].Length > 1) ? "Right" : "Left";
-
+                    //if we have a tool declared in the part file assign it to the saleOrder variable if not make it null.
+                    string result = null;
+                    if (myVars.TryGetValue("TZ1 ", out result)) { salesOrder.TZ1 = result; } else salesOrder.TZ1 = null;
+                    if (myVars.TryGetValue("TZ2 ", out result)) { salesOrder.TZ2 = result; } else salesOrder.TZ2 = null;
+                    if (myVars.TryGetValue("TZ3 ", out result)) { salesOrder.TZ3 = result; } else salesOrder.TZ3 = null;
+                    if (myVars.TryGetValue("TY1 ", out result)) { salesOrder.TY1 = result; } else salesOrder.TY1 = null;
+                    if (myVars.TryGetValue("TY2 ", out result)) { salesOrder.TY2 = result; } else salesOrder.TY2 = null;
+                    if (myVars.TryGetValue("TY3 ", out result)) { salesOrder.TY3 = result; } else salesOrder.TY3 = null;
 
 
-                //move the file from the root directory to a folder so we dont have to keep looping through the parts(this may have undesired effets)
-                File.Move(salesOrder.FilePath , processedDirectory + filePathName);
-                salesOrder.FilePath = processedDirectory + filePathName;//set the filepath to the new location
+                    if (fileSplit[2].Contains("W")) { salesOrder.WallMidOutside = "Wall"; }
+                    if (fileSplit[2].Contains("M")) { salesOrder.WallMidOutside = "Middle"; }
+                    if (fileSplit[2].Contains("O")) { salesOrder.WallMidOutside = "Outside"; }
 
-                Stream saveFileStream = File.Create(serObjectPath);
-                BinaryFormatter serializer = new BinaryFormatter();
-                serializer.Serialize(saveFileStream, salesOrder);
-                saveFileStream.Close();
-     
-            }          
-        }
+                    //if there is more than one character in lastSplit[1] we can determine that it is a right hand file.
+                    salesOrder.LeftRight = (lastSplit[1].Length > 1) ? "Right" : "Left";
+
+
+
+                    //move the file from the root directory to a folder so we dont have to keep looping through the parts(this may have undesired effets)
+                    File.Move(salesOrder.FilePath, processedDirectory + filePathName);
+                    salesOrder.FilePath = processedDirectory + filePathName;//set the filepath to the new location
+
+                    Stream saveFileStream = File.Create(serObjectPath);
+                    BinaryFormatter serializer = new BinaryFormatter();
+                    serializer.Serialize(saveFileStream, salesOrder);
+                    saveFileStream.Close();
+                }
+            }
+            catch (KeyNotFoundException)
+            {
+                Console.WriteLine("No such Key");
+                File.Move(filePath, errorDirectory + DateTime.Now.ToString("yyyyddMHHmmss") + "-" + filePathName);
+            }
+
+            catch (IndexOutOfRangeException)
+            {
+                Console.WriteLine("Index out of range");
+                File.Move(filePath, errorDirectory + DateTime.Now.ToString("yyyyddMHHmmss") + "-" + filePathName);
+            }
+
+            catch (IOException)
+            {
+                Console.WriteLine("File already exists in destination folder");
+                File.Move(filePath, errorDirectory + DateTime.Now.ToString("yyyyddMHHmmss") + "-" + filePathName);
+            }
+
+            catch (Exception e)
+            {
+                Console.WriteLine("Something went wrong: " + e);
+                File.Move(filePath, errorDirectory + DateTime.Now.ToString("yyyyddMHHmmss") + "-" + filePathName);
+            }
+         }          
+        
 
 
         private void ActiveObjList()
