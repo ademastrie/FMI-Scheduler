@@ -19,6 +19,7 @@ namespace FMI_Scheduler
             {
                 bool isCategoryfound = false;
                 
+                //if this is the first file create a list and add it to the stock list
                 if (stockList.Count == 0)
                 {
                     List<MainMenu.SalesOrder> sortedOrderList = new List<MainMenu.SalesOrder>();
@@ -119,8 +120,8 @@ namespace FMI_Scheduler
                 stockArray[13] = (TZ2 == null) ? "" : "TZ2 = " + TZ2.Trim();
                 stockArray[14] = (TZ3 == null) ? "" : "TZ3 = " + TZ3.Trim();
 
-                //TODO may need to reconsider how we name the file. If two files are made inthe same second with the same material they may override each other.
-                using (StreamWriter outputFile = new StreamWriter("../../../Stocks/"+ material + DateTime.Now.ToString("mms") + ".stk"))
+                //TODO may need to reconsider how we name the file. If two files are made inthe same second with the same material they may overwrite each other.
+                using (StreamWriter outputFile = new StreamWriter("../../../Stocks/"+ material + "_" + DateTime.Now.ToString("mmss") + ".stk"))
                 {
                     foreach (string line in stockArray)//print the stock info
                     {
